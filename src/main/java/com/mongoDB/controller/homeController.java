@@ -2,11 +2,9 @@ package com.mongoDB.controller;
 
 import com.mongoDB.model.Post;
 import com.mongoDB.repository.PostRepo;
+import com.mongoDB.repository.SearchRepo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +16,7 @@ import java.util.List;
 public class homeController {
 
     private final PostRepo postRepo;
+    private final SearchRepo searchRepo;
 
     @ApiIgnore
     @GetMapping("/")
@@ -28,6 +27,12 @@ public class homeController {
     @GetMapping("/posts")
     public List<Post> getPosts() {
         return postRepo.findAll();
+    }
+
+
+    @GetMapping("/posts/{text}")
+    public List<Post> search(@PathVariable String text) {
+        return searchRepo.findBytext(text);
     }
 
     @PostMapping("/post")
